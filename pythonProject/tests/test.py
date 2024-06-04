@@ -57,9 +57,10 @@ club = Club('PSG ARMY', Formation, 10102285)
 #club.getFormation()
 
 infos = club.getClubInfos()
-print(infos)
-
 parsed_json = json.loads(infos)
+
+# Afficher le résultat pour vérifier
+print(parsed_json[0]["name"])
 
 
 

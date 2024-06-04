@@ -75,10 +75,13 @@ class Club:
             content = response.text
         except requests.exceptions.RequestException as e:
             content = f"ça bug: {e}"
-
-        content = content[12:]
-        content = content[:len(content)-75]
-
+        i = 0
+        while content[i] != '[':
+            content = content[1:]
+        k = len(content)-1
+        while content[k] != ']':
+            content = content[:k-1]
+            k = len(content) - 1
         return content
 
 
