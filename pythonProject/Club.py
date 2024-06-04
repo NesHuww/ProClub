@@ -7,15 +7,22 @@ import simplejson
 
 class Club:
     def __init__(self, name:str, formation:Formation, id:int):
+        '''
+        
+        :param name:
+        :param formation:
+        :param id:
+        '''
         self._name = name
         self._id = id
         self._formation = formation
         self._formation.SortTactic()
         self._players = []
-        self._record = {"W": 0, "L": 0, "D": 0}
+        self._record = self.setRate()
 
 
     def getName(self):
+
         return self._name
 
     def getCaptain(self):
@@ -26,6 +33,9 @@ class Club:
 
 
     def getRecord(self):
+        return self._record
+
+    def getRate(self):
         return self._record
 
 
@@ -75,7 +85,7 @@ class Club:
             response.raise_for_status()
             content = response.text
         except requests.exceptions.RequestException as e:
-            content = f"ça bug: {e}"
+            content = f"getClubInfos: {e}"
         i = 0
         while content[i] != '[':
             content = content[1:]
@@ -86,5 +96,43 @@ class Club:
         return content
 
 
+    def setRate(self):
+        id = str(self._id)
+        url = f'https://proclubs.ea.com/api/fc/clubs/overallStats?platform=common-gen5&clubIds={id}'
+        headers = {
+            "Host": "proclubs.ea.com",
+            "Sec-Ch-Ua": '"Chromium";v="125", "Not.A/Brand";v="24"',
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Platform": '"Windows"',
+            "Upgrade-Insecure-Requests": "1",
+            "Cookie": "",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.112 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "Sec-Fetch-Site": "none",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-User": "?1",
+            "Sec-Fetch-Dest": "document",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Priority": "u=0, i",
+            "Connection": "keep-alive"
+        }
+
+        try:
+            response = requests.get(url, timeout=10, headers=headers)
+            response.raise_for_status()
+            content = response.text
+        except requests.exceptions.RequestException as e:
+            content = f"getRate: {e}"
+        data = json.loads(content)[0]
+        wins = int(data["wins"])
+        losses = int(data["losses"])
+        draws = int(data["ties"])
+        dic = {}
+        dic["W"] = (wins, round(wins/(wins+losses+draws),2))
+        dic["D"] = (draws, round(draws/(wins+losses+draws),2))
+        dic["L"] = (losses, round(losses/(wins+losses+draws),2))
+        return dic
+
     def __str__(self):
-        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain().getName()}\nFormation: {self._formation.getDisposition()}\nEquipe: {self.getFormation()}"
+        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain().getName()}\nFormation: {self._formation.getDisposition()}\nEquipe: {self.getFormation()}\nHistorique: {self.getRate()}"

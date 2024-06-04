@@ -64,6 +64,5 @@ parsed_json = json.loads(infos)
 
 
 
-
 print(club)
 
