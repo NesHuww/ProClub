@@ -60,10 +60,10 @@ infos = club.getClubInfos()
 parsed_json = json.loads(infos)
 
 # Afficher le résultat pour vérifier
-print(parsed_json[0]["name"])
+#print(parsed_json[0])
 
 
 
 
-#print(club)
+print(club)
 

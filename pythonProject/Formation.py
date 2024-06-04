@@ -1,4 +1,5 @@
 from Player import *
+
 class Formation:
     def __init__(self, player:list, captain:Player, disposition:str):
 
@@ -77,6 +78,20 @@ class Formation:
         else:
             self._team[player.getPosition()] = player.getName()
         return result
+
+    def SortTactic(self)->None:
+        '''
+        Use to sort posts by their position in a field
+        :return:
+        '''
+        dic = {}
+        for key in Player.posts:
+            if key in self._team.keys():
+                dic[key] = self._team[key]
+        self._team.clear()
+        for key in dic.keys():
+            self._team[key] = dic[key]
+        return None
 
 
 

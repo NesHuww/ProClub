@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class Player:
-    posts = ["GK", "RB", "LB", "CB", "CDM", "CM", "CAM", "RW", "LW", "ST"]
+    posts = ["GK", "LB", "RB", "CB", "CDM", "CM", "CAM", "LW", "RW", "ST"]
 
     def __init__(self, name: str, height: float|int, weight: float|int, mean: float|int = 6.0, position:str="" ):
         if type(name) != str:
