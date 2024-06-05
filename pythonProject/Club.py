@@ -38,10 +38,12 @@ class Club:
 
     def getFormation(self)->Formation:
         '''
-        Club Formation getter
+        Club Formation getter (with bots)
         :return: Formation
         '''
-        return self._formation
+        self._formation.addBotsTeams()
+        self._formation.SortTactic()
+        return self._formation._team
 
 
     def getRecord(self)->dict:
@@ -75,12 +77,7 @@ class Club:
             raise TypeError("Formation isn't a Formation.")
         self._formation = formation
 
-    def getFormation(self)->dict:
-        '''
-        Club formation getter
-        :return: Formation (dictionnary, not object)
-        '''
-        return self._formation._team
+
 
     def _getPlayerName(self, data:dict)->list:
         lst_name = []

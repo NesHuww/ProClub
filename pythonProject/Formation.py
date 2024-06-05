@@ -10,6 +10,7 @@ class Formation:
         :param player: array of players on the field
         :param captain: Formation's captain
         :param disposition: How the team plays : 433/4231/42222
+        Please, if you play with a 3 players defense or a 343, put 5 defenders
         '''
 
         if type(disposition) != str:
@@ -28,21 +29,21 @@ class Formation:
         Return the number of player playing in defense
         :return: int
         '''
-        return self._disposition[0]
+        return int(self._disposition[0])
 
     def getMidfield(self)->int:
         '''
         Return the number of player playing in midfield
         :return: int
         '''
-        return self._disposition[1]
+        return int(self._disposition[1])
 
     def getAttack(self)->int:
         '''
         Return the number of player playing in Attack
         :return: int
         '''
-        return self._disposition[2]
+        return int(self._disposition[2])
 
     def getCaptain(self)->Player:
         '''
@@ -52,13 +53,13 @@ class Formation:
         return self._captain
 
 
-    def getStriker(self)-> str:
+    def getStriker(self)-> str|int:
         '''
         Return the number of striker, if there is two steps on midfield
         :return: int or string if useless
         '''
         if len(self._disposition) == 4:
-            return self._disposition[3]
+            return int(self._disposition[3])
         else:
             return f"Useless for {self._disposition}, try to get Attack Instead"
 
@@ -109,11 +110,17 @@ class Formation:
         if player.getPosition() in self._team.keys():
             result = True
             if player.getPosition() in ["GK", "RB", "LB", "RW", "LW"]:
-                self._team[player.getPosition()] = player.getName()
+                #cas de poste unique
+                self._team[player.getPosition()] = [player.getName()]
             else:
-                self._team[player.getPosition()] = [self._team[player.getPosition()], player.getName()]
+                # cas de poste non unique où il y a quelqu'un
+                lst = self._team[player.getPosition()]
+                lst.append(player.getName())
+                lst.sort()
+                self._team[player.getPosition()] = lst
         else:
-            self._team[player.getPosition()] = player.getName()
+            #cas où c'est pas un poste unique et qu'il n'y a personne
+            self._team[player.getPosition()] = [player.getName()]
         return result
 
     def SortTactic(self)->None:
@@ -130,5 +137,91 @@ class Formation:
             self._team[key] = dic[key]
         return None
 
+    def _createBot(self, n:int)->Player:
+        '''
+        Function to create a bot number n in parameters (weight and height are automaticly 180, 60 (not the reals ones))
+        :return: Player (the bot)
+        '''
+        if type(n) is not int:
+            raise TypeError('n is not an integer')
+        return Player(f"Bot{n}", 180, 60)
+
+    def addBotsTeams(self)->None:
+        '''
+        Function to add bots to the team where there are no players
+        :return: None
+        '''
+        nbBots = 1
+        onePostField = ['GK', 'RB', 'LB', 'RW', 'LW']
+        nbplayer = len(self._players)
+        for post in onePostField:
+            if post not in self._team.keys():
+                Bot = self._createBot(nbBots)
+                Bot.setPosition(post)
+                self.addPlayer(Bot)
+                nbBots +=1
+        nbdef = 0
+        if 'CB' not in self._team.keys():
+            nbdef = self.getDefense()-2
+        else:
+            nbCb = len(self._team['CB'])
+            nbdef = self.getDefense()-2-nbCb
+        for iteration in range(nbdef):
+            Bot = self._createBot(nbBots)
+            nbBots += 1
+            Bot.setPosition('CB')
+            self.addPlayer(Bot)
+
+        if len(self._disposition) == 4 and self.getMidfield()==4:
+            nbmilnec = 3
+            quatre = False
+        else:
+            nbmilnec = 4
+            quatre = True
+        posts = ['CM', 'CDM', 'CAM']
+        for post in posts:
+            if post in self._team.keys():
+                nbmilnec = nbmilnec - len(self._team[post])
+
+        if nbmilnec != 0:
+            #s'il reste des milieux à ajouter
+            if not quatre:
+                #si c'est un milieu à trois étages
+                if self.getMidfield()==3:
+                    #milieu sans étage
+                    for nb in range(nbmilnec):
+                        Bot = self._createBot(nbBots)
+                        nbBots+=1
+                        Bot.setPosition('CM')
+                        self.addPlayer(Bot)
+            else:
+                #4 étages
+                if self.getMidfield()==2:
+                    #milieu avec un MOC
+                    print(nbmilnec)
+                    if 'CM' in self._team.keys() and len(self._team['CM']) != 2:
+                        nbmilnec -=1
+                    for nb in range(nbmilnec):
+                        Bot = self._createBot(nbBots)
+                        nbBots+=1
+                        Bot.setPosition('CM')
+                        self.addPlayer(Bot)
+                    if 'CAM' not in self._team:
+                        Bot = self._createBot(nbBots)
+                        nbBots += 1
+                        Bot.setPosition('CAM')
+                        self.addPlayer(Bot)
+
+
+
+
+
+
+
+
+
+
+        print(f"you added {nbBots} bot(s) to the team")
+        return None
 
 

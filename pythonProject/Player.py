@@ -6,7 +6,7 @@ import json
 
 
 class Player:
-    posts = ["GK", "LB", "RB", "CB", "CDM", "CM", "CAM", "LW", "RW", "ST"]
+    posts = ["GK", "LB", "CB", "RB", "CDM", "CM", "CAM", "LW", "RW", "ST"]
 
     def __init__(self, name: str, height: float|int, weight: float|int, mean: float|int = 6.0, position:str="" ):
         '''

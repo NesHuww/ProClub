@@ -8,7 +8,7 @@ NesHuw = Player("NesHuw", 178, 70)
 
 NesHuw.setPosition("CM")
 
-Formation = Formation([NesHuw],NesHuw, "411")
+Formation = Formation([NesHuw],NesHuw, "4231")
 
 AleZai = Player("AleZai", 178, 70)
 AleZai.setPosition("ST")
@@ -21,7 +21,7 @@ AleZai = Player("AleZai", 185, 80)
 AleZai.setPosition("ST")
 
 Linoa = Player("Linoa", 168, 59)
-Linoa.setPosition("CAM")
+Linoa.setPosition("CM")
 
 
 RaideNN = Player("RaideNN", 190, 100)
@@ -41,13 +41,11 @@ Simisola.setPosition("LW")
 
 
 Formation.assignPost(NesHuw)
-Formation.addPlayer(Bloody)
-Formation.addPlayer(Linoa)
 Formation.addPlayer(AleZai)
 Formation.addPlayer(RaideNN)
+Formation.addPlayer(Linoa)
 Formation.addPlayer(Paussax)
-Formation.addPlayer(Naiz)
-Formation.addPlayer(Antho)
+#Formation.addPlayer(Antho)
 Formation.addPlayer(Simisola)
 
 
@@ -63,7 +61,7 @@ parsed_json = json.loads(infos)
 #(parsed_json[0])
 #print(club._getPlayerUpdate(Bloody))
 
-print(club.getPlayerData(Bloody))
+print(club.getFormation())
 
 #print(club)
 
