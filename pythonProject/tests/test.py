@@ -8,7 +8,7 @@ NesHuw = Player("NesHuw", 178, 70)
 
 NesHuw.setPosition("CM")
 
-Formation = Formation([NesHuw],NesHuw, "4231")
+Formation = Formation([NesHuw],NesHuw, "433")
 
 AleZai = Player("AleZai", 178, 70)
 AleZai.setPosition("ST")
