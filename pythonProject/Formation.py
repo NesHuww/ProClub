@@ -201,7 +201,10 @@ class Formation:
         posts = [(nbdef-2,'CB'),(nbmiddef,'CDM'), (nbmid,'CM'),(nbmidoff,'CAM'), (nbAG,'LW'), (nbAD,'RW'), (nbBU,'ST')]
         for post in posts:
             if post[0] == 0:
-                pass
+                if post[1] in self._team.keys():
+                    while len(self._team[post[1]]) !=0:
+                        self._team[post[1]].remove(self._team[post[1]][0])
+                    self._team.pop(post[1])
             elif post[0] !=0 and post[1] in self._team.keys() and len(self._team[post[1]]) != post[0]:
                 number = post[0] -len(self._team[post[1]])
             elif post[0] !=0 and post[1] not in self._team.keys():
