@@ -62,11 +62,9 @@ club = Club('PSG ARMY', Formation, 10102285)
 #(parsed_json[0])
 #print(club.getPlayerData(AleZai))
 
-#print(club.getFormation())
 
-#print(club)
+print(club)
 
 club.generateTactics()
 
-im1 = Image.open('../images/field.png')
 

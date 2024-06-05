@@ -29,28 +29,48 @@ class Formation:
         Return the number of player playing in defense
         :return: int
         '''
-        return int(self._disposition[0])
+        count = 0
+        posts = ["RB", 'LB', 'CB']
+        for post in posts:
+            if post in self._team.keys():
+                count+= len(self._team[post])
+        return count
 
     def getMidfield(self)->int:
         '''
         Return the number of player playing in midfield
         :return: int
         '''
-        return int(self._disposition[1])
+        count = 0
+        posts = ['CM', 'CDM']
+        for post in posts:
+            if post in self._team.keys():
+                count += len(self._team[post])
+        return count
 
-    def getAttack(self)->int:
+    def getAttack(self)->tuple:
         '''
         Return the number of player playing in Attack
-        :return: int
+        :return: tuple (count + if it's 3 steps 4 steps formation
         '''
-        return int(self._disposition[2])
+        count = 0
+        result = False
+        if 'CAM' in self._team.keys():
+            posts = ["RW", 'LW', 'CAM']
+            result = True
+        else:
+            posts=["RW", 'LW', 'CAM', 'ST']
+        for post in posts:
+            if post in self._team.keys():
+                count += len(self._team[post])
+        return count, result
 
     def getCaptain(self)->Player:
         '''
         Return the player who is the captain of the team
         :return: Player
         '''
-        return self._captain
+        return self._captain.getName()
 
 
     def getStriker(self)-> str|int:
@@ -58,8 +78,10 @@ class Formation:
         Return the number of striker, if there is two steps on midfield
         :return: int or string if useless
         '''
-        if len(self._disposition) == 4:
-            return int(self._disposition[3])
+        if self.getAttack()[1]:
+            if 'ST' not in self._team:
+                raise ValueError("Il y a une erreur sur la compo (pas de buteur ?)")
+            return len(self._team['ST'])
         else:
             return f"Useless for {self._disposition}, try to get Attack Instead"
 
@@ -71,9 +93,9 @@ class Formation:
         '''
         content = ""
         if type(self.getStriker()) == str:
-            content = f"{self.getDefense()}-{self.getMidfield()}-{self.getAttack()}"
+            content = f"{self.getDefense()}-{self.getMidfield()}-{self.getAttack()[0]}"
         else:
-            content = f"{self.getDefense()}-{self.getMidfield()}-{self.getAttack()}-{self.getStriker()}"
+            content = f"{self.getDefense()}-{self.getMidfield()}-{self.getAttack()[0]}-{self.getStriker()}"
         return content
 
 
@@ -182,10 +204,8 @@ class Formation:
                 pass
             elif post[0] !=0 and post[1] in self._team.keys() and len(self._team[post[1]]) != post[0]:
                 number = post[0] -len(self._team[post[1]])
-                print("cas 2", post[1], number)
             elif post[0] !=0 and post[1] not in self._team.keys():
                  number = post[0]
-                 print("cas 3", post[1], number)
             for iteration in range(number):
                 Bot = self._createBot(nbBots)
                 nbBots += 1

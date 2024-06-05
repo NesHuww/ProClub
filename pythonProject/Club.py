@@ -236,11 +236,12 @@ class Club:
         :return: an image
         '''
         im1 = Image.open('../images/field.png')
-        print(im1)
+        im1.save('field.png')
 
     def __str__(self)->str:
         '''
         Function to have a good print of a club
         :return: string
         '''
-        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain().getName()}\nFormation: {self._formation.getDisposition()}\nEquipe: {self.getFormation()}\nHistorique: {self.getRecord()}"
+        formation = self.getFormation()
+        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain()}\nFormation: {self._formation.getDisposition()}\nEquipe: {formation}\nHistorique: {self.getRecord()}"
