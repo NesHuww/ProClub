@@ -192,9 +192,6 @@ class Formation:
                 Bot.setPosition(post[1])
                 self.addPlayer(Bot)
             number=0
-
-
-
         print(f"you added {nbBots} bot(s) to the team")
         return None
 

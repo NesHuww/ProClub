@@ -225,7 +225,7 @@ class Club:
         if len(lst_wanted_data) == 0:
             raise ValueError("you asked for no data")
         for key in data.keys():
-            if key in lst_wanted_data:
+            if key.lower() in lst_wanted_data:
                 lst_result[key] = data[key]
         return lst_result
 

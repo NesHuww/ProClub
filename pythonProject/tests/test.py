@@ -54,14 +54,14 @@ club = Club('PSG ARMY', Formation, 10102285)
 
 #club.getFormation()
 
-infos = club._getClubData()
-parsed_json = json.loads(infos)
+#infos = club._getClubData()
+#parsed_json = json.loads(infos)
 
 # Afficher le résultat pour vérifier
 #(parsed_json[0])
-#print(club._getPlayerUpdate(Bloody))
+print(club.getPlayerData(AleZai))
 
-print(club.getFormation())
+#print(club.getFormation())
 
 #print(club)
 
