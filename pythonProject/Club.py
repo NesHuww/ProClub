@@ -1,7 +1,7 @@
 from Formation import *
 import requests
 import json
-
+from PIL import Image, ImageDraw, ImageFilter
 
 
 
@@ -230,9 +230,13 @@ class Club:
         return lst_result
 
 
-
-
-
+    def generateTactics(self):
+        '''
+        This function generates the image of the tactic
+        :return: an image
+        '''
+        im1 = Image.open('../images/field.png')
+        print(im1)
 
     def __str__(self)->str:
         '''

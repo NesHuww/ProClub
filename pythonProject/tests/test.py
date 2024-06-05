@@ -2,6 +2,7 @@ from Player import *
 from Club import *
 from Formation import *
 import json
+from PIL import Image, ImageDraw, ImageFilter
 
 
 NesHuw = Player("NesHuw", 178, 70)
@@ -59,9 +60,13 @@ club = Club('PSG ARMY', Formation, 10102285)
 
 # Afficher le résultat pour vérifier
 #(parsed_json[0])
-print(club.getPlayerData(AleZai))
+#print(club.getPlayerData(AleZai))
 
 #print(club.getFormation())
 
 #print(club)
+
+club.generateTactics()
+
+im1 = Image.open('../images/field.png')
 
