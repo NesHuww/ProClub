@@ -1,64 +1,99 @@
 from Formation import *
 import requests
 import json
-import simplejson
+
+
 
 
 
 class Club:
     def __init__(self, name:str, formation:Formation, id:int):
         '''
-        
-        :param name:
-        :param formation:
-        :param id:
+        Club constructor
+        :param name:name of club
+        :param formation:how the club plays
+        :param id:club id
         '''
         self._name = name
         self._id = id
         self._formation = formation
         self._formation.SortTactic()
         self._players = []
-        self._record = self.setRate()
+        self._record = self.setRecord()
 
 
-    def getName(self):
-
+    def getName(self)->str:
+        '''
+        Club name getter
+        :return: s tring
+        '''
         return self._name
 
-    def getCaptain(self):
+    def getCaptain(self)->str:
+        '''
+        Club captain name getter
+        :return: str
+        '''
         return self._captain.name
 
-    def getFormation(self):
+    def getFormation(self)->Formation:
+        '''
+        Club Formation getter
+        :return: Formation
+        '''
         return self._formation
 
 
-    def getRecord(self):
+    def getRecord(self)->dict:
+        '''
+        Club record getter
+        :return: dict
+        '''
         return self._record
 
-    def getRate(self):
-        return self._record
 
 
-    def setName(self, name:str):
+
+    def setName(self, name:str)->None:
+        '''
+        Club name setter
+        :param name: has to be a string
+        :return: None
+        '''
         if not isinstance(name, str):
             raise TypeError("Name must be a string.")
         self._name = name
 
-    def setCaptain(self, captain:Player):
-        if not isinstance(captain,Player):
-            raise TypeError("Captain isn't a Player object.")
-        self._captain = captain
 
-    def setFormation(self,formation:Formation):
+    def setFormation(self,formation:Formation)->None:
+        '''
+        Club formation setter
+        :param formation: has to be a formation
+        :return: None
+        '''
         if not isinstance(formation,Formation):
             raise TypeError("Formation isn't a Formation.")
         self._formation = formation
 
     def getFormation(self)->dict:
+        '''
+        Club formation getter
+        :return: Formation (dictionnary, not object)
+        '''
         return self._formation._team
 
+    def _getPlayerName(self, data:dict)->list:
+        lst_name = []
+        for name in range(len(data)):
+            lst_name.append(data[name]['name'])
+        return lst_name
 
-    def getClubInfos(self):
+
+    def _getClubData(self)->str:
+        '''
+        Data of the club getter
+        :return: Data of a club, which is not epurated
+        '''
         id = str(self._id)
         url = f'https://proclubs.ea.com/api/fc/members/stats?platform=common-gen5&clubId={id}'
         headers = {
@@ -85,7 +120,7 @@ class Club:
             response.raise_for_status()
             content = response.text
         except requests.exceptions.RequestException as e:
-            content = f"getClubInfos: {e}"
+            content = f"getClubData: {e}"
         i = 0
         while content[i] != '[':
             content = content[1:]
@@ -96,7 +131,11 @@ class Club:
         return content
 
 
-    def setRate(self):
+    def setRecord(self)->dict:
+        '''
+        Record setter, automaticly update when you create a club
+        :return: dictionnary of wins, ties and losses
+        '''
         id = str(self._id)
         url = f'https://proclubs.ea.com/api/fc/clubs/overallStats?platform=common-gen5&clubIds={id}'
         headers = {
@@ -123,7 +162,7 @@ class Club:
             response.raise_for_status()
             content = response.text
         except requests.exceptions.RequestException as e:
-            content = f"getRate: {e}"
+            content = f"getRecord: {e}"
         data = json.loads(content)[0]
         wins = int(data["wins"])
         losses = int(data["losses"])
@@ -134,5 +173,50 @@ class Club:
         dic["L"] = (losses, round(losses/(wins+losses+draws),2))
         return dic
 
-    def __str__(self):
-        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain().getName()}\nFormation: {self._formation.getDisposition()}\nEquipe: {self.getFormation()}\nHistorique: {self.getRate()}"
+
+    def _getPlayerUpdate(self, player:Player)->None:
+        '''
+        Player updater with last statistics (data with ea website)
+        :return: None
+        '''
+        if not type(player) == Player:
+            raise TypeError('club you gave is not a club')
+        data = self._getClubData()
+        data = json.loads(data)
+        lst_name = self._getPlayerName(data)
+        if player.getName() not in lst_name:
+            raise ValueError('Player is not in the club you gave')
+        else:
+            indice = lst_name.index(player.getName())
+        return data[indice]
+
+
+    def getPlayerData(self,player:Player)->dict:
+        '''
+        Allow you to get the data you want from your player
+        :param player: Player you want the data from
+        :param lst_data: lst of data you want
+        :return: Dict of data you want
+        '''
+        data = self._getPlayerUpdate(player)
+        lst_available_data = ['name', 'gamesPlayed', 'winRate', 'goals', 'assists', 'cleanSheetsDef',
+        'cleanSheetsGK', 'shotSuccessRate', 'passesMade', 'passSuccessRate',
+        'ratingAve', 'tacklesMade', 'tackleSuccessRate', 'proName', 'proPos',
+        'proStyle', 'proHeight', 'proNationality', 'proOverall', 'proOverallStr',
+        'manOfTheMatch', 'redCards', 'prevGoals', 'prevGoals1', 'prevGoals2',
+        'prevGoals3', 'prevGoals4', 'prevGoals5', 'prevGoals6', 'prevGoals7',
+        'prevGoals8', 'prevGoals9', 'prevGoals10', 'favoritePosition']
+        #Demande de la data que veut la personne
+        # boucle while jusqu'à ce que la personne n'en veut plus
+        #renvoie la data demandée
+
+
+
+
+
+    def __str__(self)->str:
+        '''
+        Function to have a good print of a club
+        :return: string
+        '''
+        return f"Club: {self._name}\nCaptain: {self._formation.getCaptain().getName()}\nFormation: {self._formation.getDisposition()}\nEquipe: {self.getFormation()}\nHistorique: {self.getRecord()}"

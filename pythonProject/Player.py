@@ -1,4 +1,8 @@
 from __future__ import annotations
+import requests
+
+import json
+
 
 
 class Player:
@@ -7,7 +11,7 @@ class Player:
     def __init__(self, name: str, height: float|int, weight: float|int, mean: float|int = 6.0, position:str="" ):
         '''
         build a player
-        :param name:
+        :param name: The name has to be the one you play with (EA account)
         :param height:
         :param weight:
         :param mean optional:
@@ -132,10 +136,14 @@ class Player:
             raise TypeError('betterMean : Player in parameter is not a player')
         return self._mean > player2.getMean()
 
-    def __str__(self):
+
+
+
+
+    def __str__(self)->str:
         '''
         print how the player is
-        :return: None, magical function.
+        :return: string, magical function.
         '''
         return f'Player:{self.getName()}\nHeight:{self.getHeight()}\nWeight:{self.getWeight()}\nPositions:{self.getPosition()}\nMean:{self.getMean()}'
 

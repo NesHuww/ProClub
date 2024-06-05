@@ -14,7 +14,7 @@ AleZai = Player("AleZai", 178, 70)
 AleZai.setPosition("ST")
 
 
-Bloody = Player("Bloody", 175, 70)
+Bloody = Player("BloodyHD_51", 175, 70)
 Bloody.setPosition("CAM")
 
 AleZai = Player("AleZai", 185, 80)
@@ -56,13 +56,14 @@ club = Club('PSG ARMY', Formation, 10102285)
 
 #club.getFormation()
 
-infos = club.getClubInfos()
+infos = club._getClubData()
 parsed_json = json.loads(infos)
 
 # Afficher le résultat pour vérifier
-#print(parsed_json[0])
+#(parsed_json[0])
+print(club._getPlayerUpdate(Bloody))
 
 
 
-print(club)
+#print(club)
 

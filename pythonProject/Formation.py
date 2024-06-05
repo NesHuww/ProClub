@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from Player import *
+
 
 class Formation:
     def __init__(self, player:list, captain:Player, disposition:str):
@@ -73,13 +76,13 @@ class Formation:
         return content
 
 
-    def addPlayer(self, player)->None:
+    def addPlayer(self, player:Player)->None:
         '''
         Add a player on the player list and then add him at the good post
         :param player: Player you want to have
         :return: None
         '''
-        if not isinstance(player, Player):
+        if not type(player) == Player:
             raise TypeError("addPlayer: player isn't a player")
         self._players.append(player)
         self.assignPost(player)
