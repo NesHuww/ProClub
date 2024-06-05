@@ -140,6 +140,7 @@ class Formation:
     def _createBot(self, n:int)->Player:
         '''
         Function to create a bot number n in parameters (weight and height are automaticly 180, 60 (not the reals ones))
+        asks user for miedfield and wingers
         :return: Player (the bot)
         '''
         if type(n) is not int:
@@ -153,67 +154,44 @@ class Formation:
         '''
         nbBots = 1
         onePostField = ['GK', 'RB', 'LB', 'RW', 'LW']
-        nbplayer = len(self._players)
         for post in onePostField:
             if post not in self._team.keys():
                 Bot = self._createBot(nbBots)
                 Bot.setPosition(post)
                 self.addPlayer(Bot)
                 nbBots +=1
-        nbdef = 0
-        if 'CB' not in self._team.keys():
-            nbdef = self.getDefense()-2
-        else:
-            nbCb = len(self._team['CB'])
-            nbdef = self.getDefense()-2-nbCb
-        for iteration in range(nbdef):
-            Bot = self._createBot(nbBots)
-            nbBots += 1
-            Bot.setPosition('CB')
-            self.addPlayer(Bot)
 
-        if self.getMidfield() == 3:
-            nbmilnec = 3
-            quatre = False
 
+        nbdef= int(input('Combien il y a t-il de défenseurs dans votre compo '))
+        nbmiddef = int(input('Combien il y a t-il de milieux defensifs dans votre compo ?'))
+        nbmid = int(input('Combien il y a t-il de milieux normaux dans votre compo ?'))
+        nbmidoff = int(input('Combien il y a t-il de milieux offensifs dans votre compo ?'))
+        nbA = int(input('Combien il y a t-il d\'ailiers dans votre compo ?'))
+        nbBU = int(input('Combien il y a t-il de buteurs dans votre compo ?'))
+
+        if nbA:
+            nbAG = 1
+            nbAD = 1
         else:
-            nbmilnec = 4
-            quatre = True
-        posts = ['CM', 'CDM', 'CAM']
+            nbAG = 0
+            nbAD = 0
+
+        posts = [(nbdef-2,'CB'),(nbmiddef,'CDM'), (nbmid,'CM'),(nbmidoff,'CAM'), (nbAG,'LW'), (nbAD,'RW'), (nbBU,'ST')]
         for post in posts:
-            if post in self._team.keys():
-                nbmilnec = nbmilnec - len(self._team[post])
-        if not quatre and nbmilnec != 0:
-                for nb in range(nbmilnec):
-                    Bot = self._createBot(nbBots)
-                    nbBots += 1
-                    Bot.setPosition('CM')
-                    self.addPlayer(Bot)
-
-            # else:
-                # #4 étages
-                # if self.getMidfield()==2:
-                #     #milieu avec un MOC
-                #     print(nbmilnec)
-                #     if 'CM' in self._team.keys() and len(self._team['CM']) != 2:
-                #         nbmilnec -=1
-                #     for nb in range(nbmilnec):
-                #         Bot = self._createBot(nbBots)
-                #         nbBots+=1
-                #         Bot.setPosition('CM')
-                #         self.addPlayer(Bot)
-                #     if 'CAM' not in self._team:
-                #         Bot = self._createBot(nbBots)
-                #         nbBots += 1
-                #         Bot.setPosition('CAM')
-                #         self.addPlayer(Bot)
-
-
-
-
-
-
-
+            if post[0] == 0:
+                pass
+            elif post[0] !=0 and post[1] in self._team.keys() and len(self._team[post[1]]) != post[0]:
+                number = post[0] -len(self._team[post[1]])
+                print("cas 2", post[1], number)
+            elif post[0] !=0 and post[1] not in self._team.keys():
+                 number = post[0]
+                 print("cas 3", post[1], number)
+            for iteration in range(number):
+                Bot = self._createBot(nbBots)
+                nbBots += 1
+                Bot.setPosition(post[1])
+                self.addPlayer(Bot)
+            number=0
 
 
 

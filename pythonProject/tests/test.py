@@ -40,10 +40,10 @@ Simisola = Player("Simisola", 170, 65)
 Simisola.setPosition("LW")
 
 
-Formation.assignPost(NesHuw)
+#Formation.assignPost(NesHuw)
 Formation.addPlayer(AleZai)
 Formation.addPlayer(RaideNN)
-Formation.addPlayer(Linoa)
+#Formation.addPlayer(Linoa)
 Formation.addPlayer(Paussax)
 #Formation.addPlayer(Antho)
 Formation.addPlayer(Simisola)
