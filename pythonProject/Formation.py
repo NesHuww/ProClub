@@ -172,9 +172,10 @@ class Formation:
             Bot.setPosition('CB')
             self.addPlayer(Bot)
 
-        if len(self._disposition) == 4 and self.getMidfield()==4:
+        if self.getMidfield() == 3:
             nbmilnec = 3
             quatre = False
+
         else:
             nbmilnec = 4
             quatre = True
@@ -182,35 +183,30 @@ class Formation:
         for post in posts:
             if post in self._team.keys():
                 nbmilnec = nbmilnec - len(self._team[post])
+        if not quatre and nbmilnec != 0:
+                for nb in range(nbmilnec):
+                    Bot = self._createBot(nbBots)
+                    nbBots += 1
+                    Bot.setPosition('CM')
+                    self.addPlayer(Bot)
 
-        if nbmilnec != 0:
-            #s'il reste des milieux à ajouter
-            if not quatre:
-                #si c'est un milieu à trois étages
-                if self.getMidfield()==3:
-                    #milieu sans étage
-                    for nb in range(nbmilnec):
-                        Bot = self._createBot(nbBots)
-                        nbBots+=1
-                        Bot.setPosition('CM')
-                        self.addPlayer(Bot)
-            else:
-                #4 étages
-                if self.getMidfield()==2:
-                    #milieu avec un MOC
-                    print(nbmilnec)
-                    if 'CM' in self._team.keys() and len(self._team['CM']) != 2:
-                        nbmilnec -=1
-                    for nb in range(nbmilnec):
-                        Bot = self._createBot(nbBots)
-                        nbBots+=1
-                        Bot.setPosition('CM')
-                        self.addPlayer(Bot)
-                    if 'CAM' not in self._team:
-                        Bot = self._createBot(nbBots)
-                        nbBots += 1
-                        Bot.setPosition('CAM')
-                        self.addPlayer(Bot)
+            # else:
+                # #4 étages
+                # if self.getMidfield()==2:
+                #     #milieu avec un MOC
+                #     print(nbmilnec)
+                #     if 'CM' in self._team.keys() and len(self._team['CM']) != 2:
+                #         nbmilnec -=1
+                #     for nb in range(nbmilnec):
+                #         Bot = self._createBot(nbBots)
+                #         nbBots+=1
+                #         Bot.setPosition('CM')
+                #         self.addPlayer(Bot)
+                #     if 'CAM' not in self._team:
+                #         Bot = self._createBot(nbBots)
+                #         nbBots += 1
+                #         Bot.setPosition('CAM')
+                #         self.addPlayer(Bot)
 
 
 
