@@ -196,7 +196,7 @@ class Club:
         :return: Dict of data you want
         '''
         data = self._getPlayerUpdate(player)
-        lst_available_data = ['name', 'gamesplayed', 'winrate', 'goals', 'assists', 'cleansheetsdef',
+        lst_available_data = ['gamesplayed', 'winrate', 'goals', 'assists', 'cleansheetsdef',
         'cleansheetsGK', 'shotSuccessRate', 'passesMade', 'passSuccessRate',
         'ratingAve', 'tacklesMade', 'tackleSuccessRate', 'proName', 'proPos',
         'proStyle', 'proHeight', 'proNationality', 'proOverall', 'proOverallStr',
@@ -206,7 +206,7 @@ class Club:
 
         for key in range(len(lst_available_data)):
             lst_available_data[key] = lst_available_data[key].lower()
-        lst_wanted_data = []
+        lst_wanted_data = ['name']
         print("here is all the data you can ask, if you want all the data, type all, else, type each data one by one.")
         print("when you don't want data anymore, type no")
         print(lst_available_data)
