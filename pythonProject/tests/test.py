@@ -61,9 +61,9 @@ parsed_json = json.loads(infos)
 
 # Afficher le résultat pour vérifier
 #(parsed_json[0])
-print(club._getPlayerUpdate(Bloody))
+#print(club._getPlayerUpdate(Bloody))
 
-
+print(club.getPlayerData(Bloody))
 
 #print(club)
 

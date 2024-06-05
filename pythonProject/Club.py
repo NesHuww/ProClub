@@ -174,7 +174,7 @@ class Club:
         return dic
 
 
-    def _getPlayerUpdate(self, player:Player)->None:
+    def _getPlayerUpdate(self, player:Player)->dict:
         '''
         Player updater with last statistics (data with ea website)
         :return: None
@@ -199,16 +199,39 @@ class Club:
         :return: Dict of data you want
         '''
         data = self._getPlayerUpdate(player)
-        lst_available_data = ['name', 'gamesPlayed', 'winRate', 'goals', 'assists', 'cleanSheetsDef',
-        'cleanSheetsGK', 'shotSuccessRate', 'passesMade', 'passSuccessRate',
+        lst_available_data = ['name', 'gamesplayed', 'winrate', 'goals', 'assists', 'cleansheetsdef',
+        'cleansheetsGK', 'shotSuccessRate', 'passesMade', 'passSuccessRate',
         'ratingAve', 'tacklesMade', 'tackleSuccessRate', 'proName', 'proPos',
         'proStyle', 'proHeight', 'proNationality', 'proOverall', 'proOverallStr',
         'manOfTheMatch', 'redCards', 'prevGoals', 'prevGoals1', 'prevGoals2',
         'prevGoals3', 'prevGoals4', 'prevGoals5', 'prevGoals6', 'prevGoals7',
         'prevGoals8', 'prevGoals9', 'prevGoals10', 'favoritePosition']
-        #Demande de la data que veut la personne
-        # boucle while jusqu'à ce que la personne n'en veut plus
-        #renvoie la data demandée
+
+        for key in range(len(lst_available_data)):
+            lst_available_data[key] = lst_available_data[key].lower()
+        lst_wanted_data = []
+        print("here is all the data you can ask, if you want all the data, type all, else, type each data one by one.")
+        print("when you don't want data anymore, type no")
+        print(lst_available_data)
+        quest = 'a'
+        while quest.lower() != 'no' and quest.lower() != 'all':
+            quest = input('What data do you want ? (no if you want to stop)').lower()
+            if quest == 'no':
+                break
+            if quest == 'all':
+                return self._getPlayerUpdate(player)
+            else:
+                if quest not in lst_available_data:
+                    raise ValueError("The data you entered isn't available please restart")
+                lst_wanted_data.append(quest)
+        lst_result = {}
+        if len(lst_wanted_data) == 0:
+            raise ValueError("you asked for no data")
+        for key in data.keys():
+            if key in lst_wanted_data:
+                lst_result[key] = data[key]
+        return lst_result
+
 
 
 
