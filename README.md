@@ -17,5 +17,7 @@ I began this project because I am a huge fan of pro clubs, which is my favorite 
 * **Optimization of programs (especially tactics)**
 * **Use it on discord**
 
+### License
+Please check the license before using the bot (to make sure you re in right)
 
 #### Last Modification Date : 06/06/2024 (English Date)
