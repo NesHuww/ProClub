@@ -20,4 +20,8 @@ I began this project because I am a huge fan of pro clubs, which is my favorite 
 ### License
 Please check the license before using the bot (to make sure you re in right)
 
+
+### Discord Bot 
+**Work in progress...**
+
 #### Last Modification Date : 06/06/2024 (English Date)
