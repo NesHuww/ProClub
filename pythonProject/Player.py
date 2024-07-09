@@ -7,7 +7,7 @@ import json
 
 class Player:
     posts = ["GK", "LB", "CB", "RB", "CDM", "CM", "CAM", "LW", "RW", "ST"]
-    def __init__(self, name: str, height: float|int, weight: float|int, mean: float|int = 6.0, position:str="" ):
+    def __init__(self, name: str, height: float|int=60, weight: float|int=60, mean: float|int = 6.0, position:str="" ):
         '''
         build a player
         :param name: The name has to be the one you play with (EA account)

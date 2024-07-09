@@ -1,13 +1,14 @@
 from Formation import *
 import requests
 import json
-from PIL import Image, ImageDraw, ImageFilter
+
+namespace = "pythonProject/Club"
 
 
 
 
 class Club:
-    def __init__(self, name:str, formation:Formation, id:int):
+    def __init__(self, name:str, id:int, formation:Formation=None):
         '''
         Club constructor
         :param name:name of club
@@ -17,7 +18,8 @@ class Club:
         self._name = name
         self._id = id
         self._formation = formation
-        self._formation.SortTactic()
+        if not self._formation == None:
+            self._formation.SortTactic()
         self._players = []
         self._record = self.setRecord()
 
@@ -34,6 +36,8 @@ class Club:
         Club captain name getter
         :return: str
         '''
+        if self._formation == None:
+            raise Exception("Formation not defined")
         return self._captain.name
 
     def getFormation(self)->Formation:
@@ -41,6 +45,8 @@ class Club:
         Club Formation getter (with bots)
         :return: Formation
         '''
+        if self._formation == None:
+            raise Exception("Formation not defined")
         self._formation.addBotsTeams()
         self._formation.SortTactic()
         return self._formation._team
@@ -230,18 +236,13 @@ class Club:
         return lst_result
 
 
-    def generateTactics(self):
-        '''
-        This function generates the image of the tactic
-        :return: an image
-        '''
-        im1 = Image.open('../images/field.png')
-        im1.save('field.png')
 
     def __str__(self)->str:
         '''
         Function to have a good print of a club
         :return: string
         '''
+        if self._formation == None:
+            return f"Club: {self._name}\n Historique: {self.getRecord()}\n Please enter your formation (setFormation) to have more details."
         formation = self.getFormation()
         return f"Club: {self._name}\nCaptain: {self._formation.getCaptain()}\nFormation: {self._formation.getDisposition()}\nEquipe: {formation}\nHistorique: {self.getRecord()}"
